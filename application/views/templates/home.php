@@ -86,8 +86,8 @@
                                 Dropdown
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="#">Action</a>
-                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" id="profile" href="#">Profile</a>
+                                <!-- <a class="dropdown-item" href="#">Another action</a> -->
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="<?= base_url('signout')?>" onclick='return confirm("Signout?")'>Signout</a>
                             </div>
@@ -134,6 +134,8 @@
 
         if("<?= $_SESSION['role_id'] ?>" == "1") {
             var link = "<?= base_url('admin/home/'); ?>";
+        } else if ("<?= $_SESSION['role_id'] ?>" == "2") {
+            var link = "<?= base_url('mahasiswa'); ?>";
         }
 
         $.ajax({
@@ -169,6 +171,30 @@
             })
 
         })
+
+        $("#profile").click(function(){
+            openProfile();
+        })
+
+        function openProfile(){
+            $("#head-title").text("Profile");
+            let role = "<?= $_SESSION['role_id'] ?>";
+            let url;
+            if(role == "2"){
+                url = "<?= base_url() ?>" + "mahasiswa/profile";
+            }
+            $.ajax({
+                url : url,
+                typeData : "html",
+                data : {
+                    user_id : "<?= $_SESSION['user_id'] ?>"
+                },
+                success: function(html){
+                    $("#content").html(html);
+                }
+            })
+        }
+
     })
 
     $("#menu-toggle").click(function(e) {

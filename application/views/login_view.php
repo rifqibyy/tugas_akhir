@@ -149,7 +149,8 @@
                 </div>
                 <div class="modal-body">
                     <form action="<?= base_url('activation') ?>" method="POST">
-                        <input type="hidden" id="validationKey" value="" class="form-control">
+                        <input type="text" id="validationKey" value="" class="form-control">
+                        <input type="text" id="role" value="" class="form-control">
                         <div id="passMsg"></div>
                         <div class="form-group">
                             <input type="password" id="password-1" class="form-control" placeholder="Input Password">
@@ -169,6 +170,24 @@
     </div>
 
     <script>
+
+    // $(".form-signin").submit(function(e){
+    //     e.preventDefault();
+    //     let uname = $("#userId").val();
+    //     let passw = $("#inputPassword").val();
+    //     $.ajax({
+    //         url    : "<?= base_url('login/validation') ?>",
+    //         method : "POST",
+    //         data   : {
+    //             user_id : uname,
+    //             password: passw
+    //         },
+    //         success : function(){
+    //             return true;
+    //         }
+    //     })
+    // })
+
     var base_url = window.location.origin + '/tugas_akhir/'; // change after upload server
 
     $("#data-id").keyup(function(e) {
@@ -203,6 +222,7 @@
                     if (data.password == '') {
 
                         $("#validationKey").val(data.user_id);
+                        $("#role").val(data.role_id);
                         $('#makePassword').modal('show');
                     } else {
 
@@ -232,6 +252,7 @@
 
 
         let key = $("#validationKey").val();
+        let role = $("#role").val();
         let password1 = $("#password-1").val();
         let password2 = $("#password-2").val();
 
@@ -248,6 +269,7 @@
                 method: 'POST',
                 data: {
                     'user_id': key,
+                    'role_id': role,
                     'password': password1
                 },
                 dataType: 'json',

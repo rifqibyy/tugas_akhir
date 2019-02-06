@@ -48,7 +48,7 @@ class Users extends CI_Controller
             redirect(base_url("home"));
 
 		}else{
-			echo "Username dan password salah !";
+			return false;
 		}
 	}
 
@@ -77,6 +77,7 @@ class Users extends CI_Controller
             $datas = array(
                 'error' => 'false',
                 'user_id' => $rows['0']['user_id'],
+                'role_id' => $rows['0']['role_id'],
                 'password' => $rows['0']['password'],
                 'msg' => '',
             );
@@ -91,6 +92,7 @@ class Users extends CI_Controller
     {
 
         $user_id = $this->input->post('user_id');
+        $role_id = $this->input->post('role_id');
         $password = md5($this->input->post('password'));
 
         $table = 'tbl_users';
@@ -101,7 +103,16 @@ class Users extends CI_Controller
             'user_id' => $user_id
         );
 
+        if($role_id == '2') { 
+            $tables = 'tbl_mahasiswa';  
+            $datas = array('nim' => $user_id);
+        } else { 
+            $tables = 'tbl_relasi'; 
+            $datas = array('user_id' => $user_id);
+        }
+
         $this->Users_model->userValidate($table,$data,$where);
+        $this->Users_model->addUser($tables,$datas);
 
         $datas = array(
             'error' => 'false',
